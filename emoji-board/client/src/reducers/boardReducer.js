@@ -1,4 +1,4 @@
-const initial = { content: [], clean: true }
+const initial = { content: null, clean: true }
 export function boardReducer(state = initial, action) {
   switch (action.type) {
     case 'START':
@@ -6,7 +6,7 @@ export function boardReducer(state = initial, action) {
     case 'CHANGE':
       return Object.assign({...state}, { clean: false, content: {...action.message}})
     case 'FINISHED':
-      return Object.assign({...state}, { content: []})
+      return Object.assign({...state}, { content: null})
     default:
       return { ...state }
   }

@@ -7,7 +7,7 @@ defmodule ServerWeb.EmojiChannel do
   end
 
   def handle_info(:after_join, socket) do
-    # :ok = GenServer.call(Process.whereis(Emoji.Drawer), {:joined, socket})
+    :ok = GenServer.call(Process.whereis(Emoji.Sender), {:joined, socket})
     {:noreply, socket}
   end
 end

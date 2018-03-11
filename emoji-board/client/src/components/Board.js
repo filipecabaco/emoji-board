@@ -3,28 +3,24 @@ import { connect } from 'react-redux'
 import { post } from 'axios'
 
 const fontSize = 1.5
-const mapStateToProps = (state) => ({
-    content: state.boardReducer.content,
-    clean: state.boardReducer.clean,
-  })
 
 class Board extends React.Component{
   constructor(props) {
     super(props);
-    this.state ={ file:null }
+    this.state = { file: null }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
   }
+
   onFormSubmit(e){
-    e.preventDefault() // Stop form submit
-    this.fileUpload(this.state.file).then((response)=>{
-      console.log(response.data);
-    })
+    e.preventDefault()
+    this.fileUpload(this.state.file)
   }
   onChange(e) {
     this.setState({file:e.target.files[0]})
   }
+
   fileUpload(file){
     const url = 'http://emoji-server:4000/upload';
     const formData = new FormData();
@@ -34,13 +30,20 @@ class Board extends React.Component{
         'content-type': 'multipart/form-data'
       }
     }
-
-
-
     return  post(url, formData,config)
+  }
+  componentDidMount(){
+    this.canvas = this.getCanvasContext()
+    this.canvas.font=`${fontSize}px Arial`
+  }
+
+  componentDidUpdate(){
+    this.canvas = this.getCanvasContext()
+    this.canvas.font=`${fontSize}px Arial`
   }
 
   render(){
+    const { content } = this.props
     return (
       <div>
         <form onSubmit={this.onFormSubmit}>
@@ -48,45 +51,43 @@ class Board extends React.Component{
           <button type="submit">Upload</button>
         </form>
         <canvas ref='drawingCanvas' id='drawingCanvas' width={window.innerWidth} height={window.innerHeight}>
-        {this.props.clean ? this.cleanCanvas() : this.drawCells(this.props.content, this.refs.drawingCanvas)}
+        {content && this.drawCells(content, this.refs.drawingCanvas)}
         </canvas>
       </div>
     )
   }
 
-  cleanCanvas(){
-    const canvas = this.refs.drawingCanvas
-    if(!canvas) {return ''}
-    const context = canvas.getContext('2d')
-    context.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-  drawCells({type, content}, target) {
-    switch (type) {
-      case "image":
-        content.forEach(c => this.drawCell(c, target))
-        break;
-
-      case "video":
-        content.forEach(c => this.drawCell(c, target))
-        break;
-      default:
-        break;
-    }
+  drawCells({content}, target) {
+    this.cleanCanvas()
+    content.forEach(c => {
+      this.drawCell(c, target)
+    })
   }
 
   drawCell({height, width, alpha}){
-    const canvas = this.refs.drawingCanvas
-    if(!canvas) {return}
-    const context = canvas.getContext('2d')
-    context.font=`${fontSize}px Arial`
-    context.globalAlpha = alpha
-    const drawXCord = Math.floor(fontSize * width)
-    const drawYCord = Math.floor(fontSize * height)
-    context.fillText('😄', drawXCord, drawYCord)
+    this.canvas.globalAlpha = alpha
+    const drawXCord = fontSize * width
+    const drawYCord = fontSize * height
+    this.canvas.fillText('😄', drawXCord, drawYCord)
   }
 
+  cleanCanvas(){
+    const canvas = this.refs.drawingCanvas
+    if(canvas){
+      this.canvas.clearRect(0, 0, canvas.width, canvas.height)
+    }
+  }
 
+  getCanvasContext(){
+    const canvas = this.refs.drawingCanvas
+    if(!canvas) { throw new Error("Canvas not here") }
+    return canvas.getContext('2d')
+  }
 }
+
+const mapStateToProps = (state) => ({
+  content: state.boardReducer.content,
+  clean: state.boardReducer.clean,
+})
 
 export default connect(mapStateToProps)(Board)

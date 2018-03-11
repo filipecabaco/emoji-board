@@ -6,16 +6,16 @@ object VideoProcessor {
 
     fun process(originalPath: String, content: ByteArray, afterProcess: (List<Pixel>) -> Unit) {
         val extension = File(originalPath).extension
-        val path = "${UUID.randomUUID()}.$extension"
-        tempFile(path, content)
+        val tmpPath = "${UUID.randomUUID()}"
+        tempFile("$tmpPath.$extension", content)
 
-        val process = Runtime.getRuntime().exec("ffmpeg -i $path -r 1/1 $path-%03d.png")
+        val process = Runtime.getRuntime().exec("ffmpeg -i $originalPath -r 1/1 $tmpPath-%03d.png")
         while (process.isAlive) {}
         println("Finished processing video!")
 
-        processImages(path, afterProcess)
+        processImages(tmpPath, afterProcess)
         println("Finished processing images!")
-        cleanup(path)
+        cleanup(tmpPath)
         println("Finished cleanup!")
     }
 

@@ -56,7 +56,7 @@ private fun processVideo(sender: OtpErlangPid, content: OtpErlangTuple, mailbox:
             originalPath = (content.elementAt(0) as OtpErlangString).stringValue(),
             content = (content.elementAt(1) as OtpErlangBinary).binaryValue(),
             afterProcess = { image: List<Pixel> ->
-                Thread.sleep(800)
+                Thread.sleep(1000)
                 sendImage("video", image, sender, mailbox)
             })
 }
