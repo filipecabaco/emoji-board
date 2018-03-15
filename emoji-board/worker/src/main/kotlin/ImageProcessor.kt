@@ -5,18 +5,14 @@ import java.io.File
 import javax.imageio.ImageIO
 
 object ImageProcessor {
-    private val redContribution = 0.21f
-    private val greenContribution = 0.72f
-    private val blueContribution = 0.07f
+    private const val redContribution = 0.21f
+    private const val greenContribution = 0.72f
+    private const val blueContribution = 0.07f
 
-    fun process(file: File, afterProcess: (List<Pixel>) -> Unit) {
-        return process(file.readBytes(), afterProcess)
-    }
-
-    fun process(content: ByteArray, afterProcess: (List<Pixel>) -> Unit) {
+    fun process(content: ByteArray): List<Pixel>{
         val image = ImageIO.read(ByteInputStream(content, content.size))
         val intensities = calculateAlpha(image)
-        afterProcess(normalize(intensities))
+        return normalize(intensities)
     }
 
     private fun calculateAlpha(image: BufferedImage): List<Pixel> {
