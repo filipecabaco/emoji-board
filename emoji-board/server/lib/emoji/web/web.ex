@@ -22,5 +22,13 @@ defmodule Emoji.Web do
       |> halt()
   )
 
+  get(
+    "/",
+    do:
+      conn
+      |> send_resp(200, ":wave:")
+      |> halt()
+  )
+
   match(_, do: conn |> send_resp(404, "") |> halt())
 end
