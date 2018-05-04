@@ -21,7 +21,8 @@ defmodule SlimServer.MixProject do
   defp deps do
     [
       {:cowboy, "~> 2.4"},
-      {:plug, "~> 1.5"}
+      {:plug, "~> 1.5"},
+      {:cors_plug, "~> 1.5"}
     ]
   end
 end

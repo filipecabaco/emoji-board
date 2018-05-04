@@ -17,11 +17,7 @@ defmodule Emoji do
     ]
 
     children = [
-      Plug.Adapters.Cowboy2.child_spec([
-        {:scheme, :http},
-        {:plug, nil},
-        {:options, cowboy_opts}
-      ]),
+      {Plug.Adapters.Cowboy2, scheme: :http, plug: nil, options: cowboy_opts},
       Supervisor.child_spec(Emoji.Board.Supervisor, [])
     ]
 

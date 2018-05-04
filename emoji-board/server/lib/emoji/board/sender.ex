@@ -20,7 +20,7 @@ defmodule Emoji.Board.Sender do
     {:reply, :ok, %{state | sockets: clients}}
   end
 
-  def uniq_socket(%{assigns: %{id: id}}), do: id
+  def uniq_socket(%{id: id}), do: id
 
   # 4 - Send to socket
   defp send_content(socket, content) do

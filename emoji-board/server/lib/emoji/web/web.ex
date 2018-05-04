@@ -1,6 +1,8 @@
 defmodule Emoji.Web do
   use Plug.Router
 
+  plug(CORSPlug, origin: ~r/.*/)
+
   plug(Plug.Logger)
 
   plug(
@@ -14,21 +16,7 @@ defmodule Emoji.Web do
   plug(:match)
   plug(:dispatch)
 
-  post(
-    "/upload",
-    do:
-      conn
-      |> Emoji.Web.Upload.upload()
-      |> halt()
-  )
-
-  get(
-    "/",
-    do:
-      conn
-      |> send_resp(200, ":wave:")
-      |> halt()
-  )
+  post("/upload", do: conn |> Emoji.Web.Upload.upload() |> halt())
 
   match(_, do: conn |> send_resp(404, "") |> halt())
 end
