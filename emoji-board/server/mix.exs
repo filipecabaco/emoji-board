@@ -22,7 +22,9 @@ defmodule SlimServer.MixProject do
     [
       {:cowboy, "~> 2.4"},
       {:plug, "~> 1.5"},
-      {:cors_plug, "~> 1.5"}
+      {:plug_cowboy, "~> 2.0"},
+      {:cors_plug, "~> 1.5"},
+      {:poison, "~> 3.1"}
     ]
   end
 end

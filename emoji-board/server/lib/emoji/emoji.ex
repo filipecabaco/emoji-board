@@ -11,13 +11,13 @@ defmodule Emoji do
         {:_, [],
          [
            {["/ws"], [], Emoji.Web.Websocket, []},
-           {:_, [], Plug.Adapters.Cowboy2.Handler, {Emoji.Web, []}}
+           {:_, [], Plug.Cowboy.Handler, {Emoji.Web, []}}
          ]}
       ]
     ]
 
     children = [
-      {Plug.Adapters.Cowboy2, scheme: :http, plug: nil, options: cowboy_opts},
+      {Plug.Cowboy, scheme: :http, plug: nil, options: cowboy_opts},
       Supervisor.child_spec(Emoji.Board.Supervisor, [])
     ]
 

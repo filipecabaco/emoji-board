@@ -4,8 +4,7 @@ defmodule Emoji.Web.Websocket do
   @timeout 10_000
 
   def init(req, _) do
-    %{"id" => id} = Enum.into(:cowboy_req.parse_qs(req), %{})
-    GenServer.call(Process.whereis(Emoji.Board.Sender), {:joined, Map.put(req, :id, id)})
+    GenServer.call(Process.whereis(Emoji.Board.Sender), {:joined, req})
     {:cowboy_websocket, req, @timeout}
   end
 

@@ -13,7 +13,6 @@ defmodule Emoji.Board.Process do
     {:reply, :ok, []}
   end
 
-  # 2 - Connect to worker
   defp connect_to_worker() do
     node = :worker@localhost
     true = Node.connect(node)
@@ -21,9 +20,8 @@ defmodule Emoji.Board.Process do
     {:ok, node}
   end
 
-  # 3 - Receive Messages
   def handle_info(content, _) do
-    GenServer.cast(Process.whereis(Emoji.Sender), {:processed, content})
+    :ok = GenServer.call(Process.whereis(Emoji.Board.Sender), {:processed, content})
     {:noreply, []}
   end
 end
