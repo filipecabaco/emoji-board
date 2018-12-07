@@ -6,7 +6,7 @@ defmodule Emoji.Board.Sender do
   def init(_), do: {:ok, []}
 
   def handle_call({:joined, socket}, _, state) do
-    Logger.info "Client joined! #{inspect socket}"
+    Logger.info("Client joined! #{inspect(socket)}")
     clients = Enum.uniq_by(state ++ [socket], &uniq_socket/1)
     {:reply, :ok, clients}
   end
@@ -22,15 +22,21 @@ defmodule Emoji.Board.Sender do
   end
 
   def uniq_socket(%{headers: %{"sec-websocket-key" => sec_websocket_key}}), do: sec_websocket_key
-  defp clean_view(%{pid: pid}), do: send(pid,Poison.encode!(%{type: :clean}))
+  defp clean_view(%{pid: pid}), do: send(pid, Poison.encode!(%{type: :clean}))
+
   defp send_content(%{pid: pid}, content) do
     Task.async(fn ->
       Logger.info("Sending content...")
+
       content
       |> Enum.chunk_by(fn %{height: height} -> height end)
-      |> Enum.map( fn c -> send(pid, Poison.encode!(%{type: :draw, content: c})) end)
+      |> Enum.map(fn c ->
+        Task.async(fn ->
+          send(pid, Poison.encode!(%{type: :draw, content: c}))
+        end)
+      end)
+
       {:ok, pid}
     end)
   end
-
 end

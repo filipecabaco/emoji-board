@@ -10,11 +10,12 @@ class App extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
     this.connect()
+    this.canvasSize=10000
   }
 
   componentDidMount() {
     document.getElementById("drawingCanvas").getContext('2d').font = `${fontSize}px Arial`
-    document.getElementById("drawingCanvas").getContext('2d').clearRect(0, 0, window.innerWidth, window.innerHeight)
+    document.getElementById("drawingCanvas").getContext('2d').clearRect(0, 0, this.canvasSize, this.canvasSize)
   }
 
   render() {
@@ -24,7 +25,7 @@ class App extends React.Component {
           <input type="file" onChange={this.onChange} />
           <button type="submit">Upload</button>
         </form>
-        <canvas ref='drawingCanvas' id='drawingCanvas' width={window.innerWidth} height={window.innerHeight} />
+        <canvas ref='drawingCanvas' id='drawingCanvas' width={this.canvasSize} height={this.canvasSize} />
       </div>
     )
   }
@@ -44,7 +45,7 @@ class App extends React.Component {
           document
           .getElementById("drawingCanvas")
           .getContext('2d')
-          .clearRect(0, 0, window.innerWidth, window.innerHeight)
+          .clearRect(0, 0, this.canvasSize, this.canvasSize)
           break;
         default:
           break;
