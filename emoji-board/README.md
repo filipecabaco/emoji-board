@@ -10,7 +10,6 @@ There's also some information regarding Elixir that might be useful for your set
 To properly code in elixir you need:
 
 * [Install Elixir](https://elixir-lang.org/install.html)
-* [Install Phoenix](https://hexdocs.pm/phoenix/installation.html)
 * A good editor
   * Emacs - [Link](https://github.com/tonini/alchemist.el)
   * VSCode - [Link](https://marketplace.visualstudio.com/items?itemName=mjmcloug.vscode-elixir)
