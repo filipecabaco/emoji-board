@@ -1,5 +1,4 @@
 defmodule Emoji.Web.Websocket do
-  import Plug.Conn
   @behaviour :cowboy_websocket
   @timeout 10_000
 
@@ -8,7 +7,7 @@ defmodule Emoji.Web.Websocket do
     {:cowboy_websocket, req, @timeout}
   end
 
-  def websocket_handle({:text, message}, state) do
+  def websocket_handle({:text, _message}, state) do
     {:ok, state}
   end
 

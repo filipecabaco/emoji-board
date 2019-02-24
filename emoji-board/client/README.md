@@ -1,13 +1,24 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Skeleton App
 
-## Available Scripts
+Simple React skeleton app to be used in projects.
 
-In the project directory, you can run:
+## What does it have?
 
-### `npm start`
+- ⚛️React using Javascript
+- 📦Webpack and Babel to bundle up everything
+- 🖥React component with CSS module
+- 📖Storybook for component design / manual testing
+- ✅Testing with Jest & Enzyme
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## What does it do?
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+- **start** - Starts development server with hot code reload
+- **test** - runs tests once
+- **test:watch** - runs test in watch mode
+- **storybook** - starts up storybook
+- **build-storybook** - creates static version of storybook for sharing
+- **build** - bundles up application
+
+## Why?
+
+I needed to learn how to setup a project but also wanted a lean and reusable piece that doesn't go for complex boilerplates that add unnecessary libraries.
