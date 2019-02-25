@@ -3,7 +3,7 @@ import { post } from "axios";
 import styles from "./App.css";
 
 const fontSize = 1;
-const canvasSize = 800;
+const canvasSize = window.innerHeight;
 
 navigator.mediaDevices
   .getUserMedia({ video: true })
@@ -18,9 +18,6 @@ navigator.mediaDevices
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { file: null };
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.connect();
   }
 
@@ -32,13 +29,17 @@ export default class App extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <button onClick={this.takePicture}>Take Photo!</button>
-        <canvas
-          ref="canvas"
-          id="canvas"
-          width={canvasSize}
-          height={canvasSize}
-        />
+        <div>
+          <canvas
+            onClick={this.takePicture}
+            ref="canvas"
+            id="canvas"
+            className={styles.canvas}
+            width={canvasSize}
+            height={canvasSize}
+          />
+        </div>
+
         <canvas ref="snapshot" id="snapshot" className={styles.snapshot} />
         <video />
       </div>
@@ -75,15 +76,6 @@ export default class App extends React.Component {
           break;
       }
     };
-  }
-
-  onFormSubmit(e) {
-    e.preventDefault();
-    fileUpload(this.state.file);
-  }
-
-  onChange(e) {
-    this.setState({ file: e.target.files[0] });
   }
 }
 

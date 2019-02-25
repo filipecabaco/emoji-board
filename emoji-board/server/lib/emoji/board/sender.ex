@@ -30,13 +30,12 @@ defmodule Emoji.Board.Sender do
 
       content
       |> Enum.chunk_by(fn %{height: height} -> height end)
-      |> Enum.map(fn c ->
-        Task.async(fn ->
-          send(pid, Poison.encode!(%{type: :draw, content: c}))
-        end)
-      end)
+      |> Enum.map(&send_chunk(pid, &1))
 
+      # |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end)) # Parallelize it!
       {:ok, pid}
     end)
   end
+
+  defp send_chunk(pid, chunk), do: send(pid, Poison.encode!(%{type: :draw, content: chunk}))
 end
