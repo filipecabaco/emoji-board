@@ -1,39 +1,37 @@
-# Emoji Board Startup Kit
+# Emoji Board Presentation
+
 ## What is this
 
-Code used during the Emoji Board presentation.
-
-There's also some information regarding Elixir that might be useful for your setup.
-
-## What do you need
-
-To properly code in elixir you need:
-
-* [Install Elixir](https://elixir-lang.org/install.html)
-* A good editor
-  * Emacs - [Link](https://github.com/tonini/alchemist.el)
-  * VSCode - [Link](https://marketplace.visualstudio.com/items?itemName=mjmcloug.vscode-elixir)
-  * VIM - [Link](https://github.com/slashmili/alchemist.vim)
-  * IntelliJ - [Link](https://plugins.jetbrains.com/plugin/7522-elixir)
+Presentation and code used for the Emoji Board presentation
 
 ## What does this repository contain
 
-### Client
+### Presentation
 
-React-Redux frontend that receives events via websocket that fires some actions
+Starts with `yarn start`
+
+React application that takes care of the presentation and "main feature". Use `Left Arrow` and `Right Arrow` keys to change slides. Emoji slide will take picture when you click on the canvas element
+
+### Server
+
+Starts with `iex -S mix` and requires `epmd -d` to be running
+
+Main orchestrator that handles communication between all components
 
 ### Worker
 
-A small application in a mistery language that does stuff... I know that Github will show languages so... :tada: I guess...
+Starts with `./gradlew run` and requires `epmd -d` to be running
+
+Kotlin application that will receive an image and calculate the alpha of each pixel to send it back to the Server
 
 ## References
 
 Here are some good references about Elixir
 
-* [Elixir School](https://elixirschool.com/en/)
-* [Exercism](http://exercism.io/languages/elixir/about)
-* [Awesome Elixir](https://github.com/h4cc/awesome-elixir)
-* [Elixir Status](https://elixirstatus.com/)
+- [Elixir School](https://elixirschool.com/en/)
+- [Exercism](http://exercism.io/languages/elixir/about)
+- [Awesome Elixir](https://github.com/h4cc/awesome-elixir)
+- [Elixir Status](https://elixirstatus.com/)
 
 ## That's it
 

@@ -1,10 +1,8 @@
 .container {
   text-align: center;
-  background: rgb(255, 250, 181);
-  background: linear-gradient(#fceabb, #fceabc);
 }
 .canvas {
-  border: 1px dashed #fceabb;
+  border: 2px dashed #ffdb80;
   background: white;
 }
 .snapshot {
