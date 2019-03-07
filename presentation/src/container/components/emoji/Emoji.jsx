@@ -1,6 +1,6 @@
 import * as React from "react";
 import { post } from "axios";
-import styles from "./App.css";
+import styles from "./Emoji.css";
 
 const fontSize = 1;
 const canvasSize = window.innerHeight;

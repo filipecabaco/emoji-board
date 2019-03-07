@@ -1,0 +1,12 @@
+.markdownContent {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 4vh;
+}
+
+.markdownContent div {
+  display: inline-flex;
+  font-size: 4vh;
+}

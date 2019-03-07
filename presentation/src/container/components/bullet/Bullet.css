@@ -1,0 +1,21 @@
+.bulletContent {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-grow: 0;
+  flex-direction: column;
+  padding-top: 16vh;
+  height: calc(100% - 16vh);
+  padding-left: 4vw;
+  width: calc(100% - 4vw);
+}
+
+.bulletContent .title {
+  display: inline-flex;
+  font-size: 8vh;
+}
+
+.bulletContent div {
+  display: inline-flex;
+  font-size: 4vh;
+  list-style-type: disc;
+}

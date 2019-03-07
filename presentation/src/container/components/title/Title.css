@@ -1,0 +1,18 @@
+.titleContent {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+.titleContent .title {
+  display: inline-flex;
+  font-size: 20vh;
+  padding: 2vh;
+}
+
+.titleContent .subtitle {
+  display: inline-flex;
+  font-size: 8vh;
+  padding: 2vh;
+}
