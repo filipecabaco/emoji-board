@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
-import { slides } from "./Slides";
-import { Image } from "./components/image/Image";
-import { Title } from "./components/title/Title";
-import { Markdown } from "./components/markdown/Markdown";
 import { Bullet } from "./components/bullet/Bullet";
-import { Svg } from "./components/svg/Svg";
 import Emoji from "./components/emoji/Emoji";
+import { Image } from "./components/image/Image";
+import { Markdown } from "./components/markdown/Markdown";
+import { Svg } from "./components/svg/Svg";
+import { Title } from "./components/title/Title";
+import { slides } from "./Slides";
 
 const contents = slides.map(slide => {
   switch (slide.type) {

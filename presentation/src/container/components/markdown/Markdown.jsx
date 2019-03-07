@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./Markdown.css";
 import hljs from "highlight.js";
 import MarkdownIt from "markdown-it";
+import React from "react";
+import styles from "./Markdown.css";
 
 const markdownParser = MarkdownIt({
   highlight: (str, lang) =>

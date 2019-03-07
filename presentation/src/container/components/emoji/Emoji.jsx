@@ -1,5 +1,5 @@
-import * as React from "react";
 import { post } from "axios";
+import * as React from "react";
 import styles from "./Emoji.css";
 
 const fontSize = 1;
