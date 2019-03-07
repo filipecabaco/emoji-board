@@ -5,19 +5,23 @@ import styles from "./Emoji.css";
 const fontSize = 1;
 const canvasSize = window.innerHeight;
 
-navigator.mediaDevices
-  .getUserMedia({ video: true })
-  .then(function(stream) {
-    getVideo().srcObject = stream;
-    getVideo().play();
-  })
-  .catch(function(err) {
-    console.error("Error in 📷!", err);
-  });
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    navigator.mediaDevices
+      .getUserMedia({
+        video: {
+          width: { ideal: window.innerHeight },
+          height: { ideal: window.innerHeight }
+        }
+      })
+      .then(function(stream) {
+        getVideo().srcObject = stream;
+        getVideo().play();
+      })
+      .catch(function(err) {
+        console.error("Error in 📷!", err);
+      });
     this.connect();
   }
 

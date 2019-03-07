@@ -120,7 +120,7 @@ export const processorGenserver1 = `\`\`\` elixir
 
 defmodule Emoji.Board.Sender do
 # ...
-# When it receives a message with a tuple of :image and a filepath
+# Receives a message with a tuple of :image and a filepath and...
 # 1. Reads file
 # 2. Connects to Kotlin worker
 # 3. Sends message to Kotlin worker
@@ -140,9 +140,11 @@ export const processorGenserver2 = `\`\`\` elixir
 defmodule Emoji.Web.Upload do
   import Plug.Conn
 # Welcome to some hardcore pattern matching!
-  def upload(%{body_params: %{"file" => %{path: path, content_type: content_type}}} = conn) do
-#   Find and call our processor with the :image and the path created 
-#   by our webserver to receive upload
+  def upload(
+    %{body_params: %{"file" => %{path: path, content_type: content_type}}} = conn
+  ) do
+#   Find and call our processor with the :image and
+#   the path created by our webserver to receive upload
     :ok = GenServer.call(Process.whereis(Emoji.Board.Process), {type(:image), path})
     send_resp(conn, 200, "")
   end
@@ -186,10 +188,10 @@ private tailrec fun receive(mailbox: OtpMbox) {
 //Parse and use message
   val type = msg.elementAt(0) as OtpErlangAtom
   thread(start = true) {
-      when (type) {
-          OtpErlangAtom("image") -> processImageMsg(msg, mailbox)
-          else -> println("I don't know this message...")
-      }
+    when (type) {
+      OtpErlangAtom("image") -> processImageMsg(msg, mailbox)
+      else -> println("I don't know this message...")
+    }
   }
 //Repeat until the end of time
   receive(mailbox)

@@ -1,7 +1,4 @@
 .container {
-  font-size: 15px;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   text-align: center;
   background: rgb(255, 250, 181);
   background: linear-gradient(#fceabb, #fceabc);
@@ -13,7 +10,6 @@
 .snapshot {
   display: none;
 }
-
 video {
   display: none;
 }

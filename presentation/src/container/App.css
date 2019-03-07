@@ -1,4 +1,6 @@
 body section {
   font-family: "Futura", "Trebuchet MS", Arial, sans-serif;
   height: 100%;
+  background: rgb(255, 250, 181);
+  background: linear-gradient(#fceabb, #fceabc);
 }
