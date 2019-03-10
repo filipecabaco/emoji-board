@@ -7,7 +7,6 @@ Simple React skeleton app to be used in projects.
 - ⚛️React using Javascript
 - 📦Webpack and Babel to bundle up everything
 - 🖥React component with CSS module
-- 📖Storybook for component design / manual testing
 - ✅Testing with Jest & Enzyme
 
 ## What does it do?
@@ -15,8 +14,6 @@ Simple React skeleton app to be used in projects.
 - **start** - Starts development server with hot code reload
 - **test** - runs tests once
 - **test:watch** - runs test in watch mode
-- **storybook** - starts up storybook
-- **build-storybook** - creates static version of storybook for sharing
 - **build** - bundles up application
 
 ## Why?

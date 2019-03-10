@@ -31,7 +31,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0,
+      current: parseInt(this.getSlideParam()) || 0,
       contents: contents,
       max: contents.length - 1
     };
@@ -46,12 +46,27 @@ export default class App extends React.Component {
     return this.state.contents[this.state.current]();
   }
 
+  setSlideParam(slide) {
+    var newurl = `${window.location.protocol}//${window.location.host}${
+      window.location.pathname
+    }?slide=${slide}`;
+    window.history.pushState({ path: newurl }, "", newurl);
+  }
+
+  getSlideParam() {
+    return new URLSearchParams(window.location.search).get("slide");
+  }
+
   keyDown(e) {
     if (e.code === "ArrowLeft" && this.state.current > 0) {
-      this.setState({ current: this.state.current - 1 });
+      const current = this.state.current - 1;
+      this.setSlideParam(current);
+      this.setState({ current });
     }
     if (e.code === "ArrowRight" && this.state.current < this.state.max) {
-      this.setState({ current: this.state.current + 1 });
+      const current = this.state.current + 1;
+      this.setSlideParam(current);
+      this.setState({ current });
     }
   }
 }
