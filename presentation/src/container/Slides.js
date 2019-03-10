@@ -7,7 +7,6 @@ import GenServerTypes from "svg-react-loader?name=Icon!./content/genserver_types
 import SupervisionTree from "svg-react-loader?name=Icon!./content/supervision_tree.svg";
 import CarCrashGif from "./content/car_crash.gif";
 import {
-  epmd,
   processorGenserver0,
   processorGenserver1,
   processorGenserver2,
@@ -50,6 +49,11 @@ export const slides = [
   },
   {
     type: "bullet",
+    title: "Why Elixir?",
+    bullets: ["Functional", "Reliable", "Concurrent", "Scalable"]
+  },
+  {
+    type: "bullet",
     title: "What will we do?",
     bullets: [
       "Create an Elixir application",
@@ -87,9 +91,9 @@ export const slides = [
     type: "bullet",
     title: "What's a Supervisor?",
     bullets: [
-      "Supervisors are helicopter parents that are always aware of their kids",
-      "Supervisors can supervise other supervisors, creating a happy family tree",
-      "This happy family trees has the rules on how to start and stop each element of the family. If needed, parents will come to the rescue and bring their child back to live"
+      "Supervisors are helicopter bosses that are always aware of their workers",
+      "Supervisors can supervise other supervisors, creating a tree",
+      "This tree controls the rules on how to start and stop each worker. If needed, parents will come to the rescue and bring their worker back to live"
     ]
   },
   { type: "image", style: { height: "70%" }, img: SupervisorsGif },
@@ -97,7 +101,10 @@ export const slides = [
   { type: "markdown", markdown: supervisor1 },
   { type: "svg", title: "", svg: <SupervisionTree /> },
   { type: "image", style: { height: "70%" }, img: CarCrashGif },
-  { type: "title", subtitle: "Now it's time to have some kids playing around" },
+  {
+    type: "title",
+    subtitle: "Now we need to create the workers that will be supervised"
+  },
   {
     type: "svg",
     title: "Creating the Emoji Processor",
@@ -117,10 +124,14 @@ export const slides = [
     markdown: processorGenserver2
   },
   { type: "markdown", markdown: supervisor2 },
-  { type: "svg", title: "Time to connect our worker", svg: <EmojiKotlinSvg /> },
+  {
+    type: "svg",
+    title: "Time to connect our workers",
+    svg: <EmojiKotlinSvg />
+  },
   {
     type: "bullet",
-    title: "Why?",
+    title: "Oh god... Why...?",
     bullets: [
       "Erlang provides an out of the box Java library to connect Beam VM with JVM",
       "Since everything is message passing, we can do the same with other languages",
@@ -128,7 +139,6 @@ export const slides = [
       "Kotlin has really good Java Interoperability and it's really fun to work with"
     ]
   },
-  { type: "markdown", style: { alignContent: "center" }, markdown: epmd },
   { type: "markdown", markdown: supervisor3 },
   { type: "markdown", markdown: processorGenserver3 },
   { type: "markdown", markdown: worker0 },
@@ -138,5 +148,10 @@ export const slides = [
   { type: "markdown", markdown: websocket0 },
   { type: "markdown", markdown: sender0 },
   { type: "markdown", markdown: supervisor4 },
-  { type: "emoji" }
+  { type: "emoji" },
+  {
+    type: "title",
+    title: "Thank you!",
+    subtitle: "Questions?"
+  }
 ];

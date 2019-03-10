@@ -6,7 +6,8 @@
   padding-top: 16vh;
   height: calc(100% - 16vh);
   padding-left: 4vw;
-  width: calc(100% - 4vw);
+  padding-right: 4vw;
+  width: calc(100% - 8vw);
 }
 
 .bulletContent .title {

@@ -6,7 +6,6 @@
   margin-left: 4vh;
 }
 
-.markdownContent div {
-  display: inline-flex;
+.markdownContent > div {
   font-size: 4vh;
 }

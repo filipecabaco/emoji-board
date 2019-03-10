@@ -7,12 +7,14 @@
 }
 .titleContent .title {
   display: inline-flex;
+  text-align: center;
   font-size: 20vh;
   padding: 2vh;
 }
 
 .titleContent .subtitle {
   display: inline-flex;
+  text-align: center;
   font-size: 8vh;
   padding: 2vh;
 }

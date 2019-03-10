@@ -22,18 +22,7 @@ end
 \`\`\``;
 
 export const supervisor1 = `\`\`\` elixir
-defmodule Emoji.Board.Supervisor do
-  use Supervisor
-
-#  def start_link(arg), do: 
-#    Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
-
-  def init(_arg) do
-#    children = []
-
-    Supervisor.init(children, strategy: :one_for_one)
-  end
-end 
+Supervisor.init(children, strategy: :one_for_one)
 \`\`\``;
 
 export const supervisor2 = `\`\`\` elixir
@@ -53,25 +42,12 @@ defmodule Emoji.Board.Supervisor do
 end 
 \`\`\``;
 
-export const supervisor3 = `\`\`\` elixir
-defmodule Emoji.Board.Supervisor do
-  use Supervisor
-
-  def start_link(arg), do: 
-    Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
-
-  def init(_arg) do
-#    children = [
-#      {Emoji.Board.Process, []}
-#    ]
-
-#   Connect to the Erlang Node created by the JVM side    
-    Node.start(:server@localhost, :shortnames)
-    Node.set_cookie(:secret)
-
-#    Supervisor.init(children, strategy: :one_for_one)
-  end
-end
+export const supervisor3 = `
+> in Emoji.Board.Supervisor
+\`\`\` elixir
+# Connect to the JVM 
+Node.start(:server@localhost, :shortnames)
+Node.set_cookie(:secret)
 \`\`\``;
 
 export const supervisor4 = `\`\`\` elixir
@@ -116,24 +92,21 @@ defmodule Emoji.Board.Sender do
 end 
 \`\`\``;
 
-export const processorGenserver1 = `\`\`\` elixir
-
-defmodule Emoji.Board.Sender do
-# ...
+export const processorGenserver1 = `
+> in Emoji.Board.Process
+\`\`\` elixir
 # Receives a message with a tuple of :image and a filepath and...
 # 1. Reads file
 # 2. Connects to Kotlin worker
 # 3. Sends message to Kotlin worker
 # 4. Returns :ok to the original caller
-  def handle_call({:image, filepath}, _sender, _state) do
-    {:ok, content} = File.read(filepath)
-    {:ok, node} = connect_to_worker()
-    message = {:image, self(), content}
-    send({:mailbox, node}, message)
-    {:reply, :ok, []}
-  end
-  # ...
-end 
+def handle_call({:image, filepath}, _sender, _state) do
+  {:ok, content} = File.read(filepath)
+  {:ok, node} = connect_to_worker()
+  message = {:image, self(), content}
+  send({:mailbox, node}, message)
+  {:reply, :ok, []}
+end
 \`\`\``;
 
 export const processorGenserver2 = `\`\`\` elixir
@@ -151,41 +124,44 @@ defmodule Emoji.Web.Upload do
 end
 \`\`\``;
 
-export const processorGenserver3 = `\`\`\` elixir
-defmodule Emoji.Board.Process do
+export const processorGenserver3 = `
+> in Emoji.Board.Process
+\`\`\` elixir
 # Connect to our node and pings it 
-  defp connect_to_worker() do
-    node = :worker@localhost
-    true = Node.connect(node)
-    :pong = Node.ping(node)
-    {:ok, node}
-  end
+defp connect_to_worker() do
+  node = :worker@localhost
+  true = Node.connect(node)
+  :pong = Node.ping(node)
+  {:ok, node}
+end
 
 # Receives message from worker
-  def handle_info(content, _) do
-    {:noreply, []}
-  end
+def handle_info(content, _) do
+  {:noreply, []}
 end
 \`\`\``;
 
-export const worker0 = ` \`\`\` kotlin
-
+export const worker0 = `
+> in Kotlin
+\`\`\` kotlin
 fun main(args: Array<String>) {
-//Create the equivalent to an Erlang Node
+// Create the equivalent to an Erlang Node
   val conn = OtpNode("worker@localhost")
   conn.setCookie("secret")
-//Create a mailbox for said Node
+// Create a mailbox for said Node
   val mailbox = conn.createMbox("mailbox")
-//Start receiving messages
+// Start receiving messages
   receive(mailbox)
 }
 \`\`\``;
-export const worker1 = ` \`\`\` kotlin
+export const worker1 = `
+> in Kotlin
+\`\`\` kotlin
 private tailrec fun receive(mailbox: OtpMbox) {
   println("Worker is ready and awaiting for messages")
-//Blocking call to receive
+// Blocking call to receive
   val msg = mailbox.receive() as OtpErlangTuple
-//Parse and use message
+// Parse and use message
   val type = msg.elementAt(0) as OtpErlangAtom
   thread(start = true) {
     when (type) {
@@ -193,27 +169,20 @@ private tailrec fun receive(mailbox: OtpMbox) {
       else -> println("I don't know this message...")
     }
   }
-//Repeat until the end of time
+// Repeat until the end of time
   receive(mailbox)
 }
 \`\`\``;
 
-export const processorGenserver4 = `\`\`\` elixir
-defmodule Emoji.Board.Process do
-#  defp connect_to_worker() do
-#    node = :worker@localhost
-#    true = Node.connect(node)
-#    :pong = Node.ping(node)
-#    {:ok, node}
-#  end
-
-  def handle_info(content, _) do
-#   Find and call our sender
-    :ok = GenServer.call(
-      Process.whereis(Emoji.Board.Sender), 
-      {:processed, content})
-    {:noreply, []}
-  end
+export const processorGenserver4 = `
+> in Emoji.Board.Process
+\`\`\` elixir
+def handle_info(content, _) do
+# Find and call our sender
+  :ok = GenServer.call(
+    Process.whereis(Emoji.Board.Sender), 
+    {:processed, content})
+  {:noreply, []}
 end
 \`\`\``;
 
