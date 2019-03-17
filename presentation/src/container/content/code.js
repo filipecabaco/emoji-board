@@ -72,7 +72,7 @@ end
 \`\`\``;
 
 export const processorGenserver0 = `\`\`\` elixir
-defmodule Emoji.Board.Sender do
+defmodule Emoji.Board.Process do
   require Logger
   use GenServer
 
@@ -114,11 +114,10 @@ defmodule Emoji.Web.Upload do
   import Plug.Conn
 # Welcome to some hardcore pattern matching!
   def upload(
-    %{body_params: %{"file" => %{path: path, content_type: content_type}}} = conn
-  ) do
+    %{body_params: %{"file" => %{path: path}}} = conn) do
 #   Find and call our processor with the :image and
 #   the path created by our webserver to receive upload
-    :ok = GenServer.call(Process.whereis(Emoji.Board.Process), {type(:image), path})
+    :ok = GenServer.call(Process.whereis(Emoji.Board.Process), {:process, path})
     send_resp(conn, 200, "")
   end
 end
@@ -135,7 +134,7 @@ defp connect_to_worker() do
   {:ok, node}
 end
 
-# Receives message from worker
+# Receives messagefrom worker
 def handle_info(content, _) do
   {:noreply, []}
 end
@@ -174,14 +173,27 @@ private tailrec fun receive(mailbox: OtpMbox) {
 }
 \`\`\``;
 
+export const worker2 = `
+> in Kotlin
+\`\`\` kotlin
+private fun processImageMsg(msg: OtpErlangTuple, mailbox: OtpMbox) {
+  println("Processing Image...")
+  val sender = msg.elementAt(1) as OtpErlangPid
+  val content = msg.elementAt(2) as OtpErlangBinary
+  val pixels = ImageProcessor.process(content = content.binaryValue())
+  mailbox.send(sender, pixels.typify())
+  println("I'm done!")
+}
+\`\`\``;
+
 export const processorGenserver4 = `
 > in Emoji.Board.Process
 \`\`\` elixir
 def handle_info(content, _) do
 # Find and call our sender
   :ok = GenServer.call(
-    Process.whereis(Emoji.Board.Sender), 
-    {:processed, content})
+    Process.whereis(Emoji.Board.Sender), {:processed, content}
+  )
   {:noreply, []}
 end
 \`\`\``;
@@ -189,22 +201,21 @@ end
 export const websocket0 = `\`\`\` elixir
 defmodule Emoji.Web.Websocket do
   @behaviour :cowboy_websocket
-  @timeout 10_000
+  @timeout 500
 
   def init(req, _) do
-    GenServer.call(
-      Process.whereis(Emoji.Board.Sender), 
-      {:joined, req})
-    {:cowboy_websocket, req, @timeout}
+    GenServer.call(Process.whereis(Emoji.Board.Sender), {:joined, req})
+    {:cowboy_websocket, req, req, %{timeout: @timeout}}
   end
 
-  def websocket_handle({:text, _message}, state) do
-    {:ok, state}
+  def websocket_handle(_, state), do: {:ok, state}
+  def websocket_info(message, state), do: {:reply, {:text, message}, state}
+
+  def terminate({:remote, _, _}, _, state) do
+    GenServer.call(Process.whereis(Emoji.Board.Sender), {:left, state})
   end
 
-  def websocket_info(message, state) do
-    {:reply, {:text, message}, state}
-  end
+  def terminate(_, _, _), do: :ok
 end
 \`\`\``;
 export const sender0 = `\`\`\` elixir
@@ -212,30 +223,47 @@ defmodule Emoji.Board.Sender do
   require Logger
   use GenServer
 
-  def start_link(_), do: 
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(_), do: GenServer.start_link(__MODULE__, [], name: __MODULE__)
   def init(_), do: {:ok, []}
 
   def handle_call({:joined, socket}, _, state) do
-    Logger.info("Client joined! #{inspect(socket)}")
-    clients = Enum.uniq_by(state ++ [socket], &uniq_socket/1)
-#   State is updated! Next call will have new state
-#   Updates happen in sequence with each received message
-    {:reply, :ok, clients}
-  end
-
-end
-\`\`\``;
-export const sender1 = `\`\`\` elixir
-defmodule Emoji.Board.Sender do
-# ...
-  def handle_call({:processed, content}, _, state) do
-#   For each websocket connection, send a clean message
-    Enum.each(state, &clean_view(&1))
-#   For each websocket connection, send the pixel content
-    Enum.each(state, &send_content(&1, content))
+    Logger.info("Client joined! #{get_ws_key(socket)}")
+    state = Enum.uniq_by(state ++ [socket], &get_ws_key/1)
     {:reply, :ok, state}
   end
-# ...
+
+  def handle_call({:left, socket}, _, state) do
+    Logger.info("Client left! #{get_ws_key(socket)}")
+    state = Enum.reject(state, &(get_ws_key(&1) == get_ws_key(socket)))
+    {:reply, :ok, state}
+  end
+
+  defp get_ws_key(%{headers: %{"sec-websocket-key" => sec_websocket_key}}) do
+    sec_websocket_key
+  end
+end
+\`\`\``;
+export const sender1 = `
+> in Emoji.Board.Sender
+\`\`\` elixir
+def handle_call({:processed, content}, _, state) do
+  Enum.each(state, &clean_view(&1))
+  Enum.each(state, &send_content(&1, content))
+  {:reply, :ok, state}
+end
+\`\`\``;
+export const sender2 = `
+> in Emoji.Board.Sender
+\`\`\` elixir
+defp send_content(%{pid: pid}, content) do
+    Task.async(fn ->
+      Logger.info("Sending content...")
+
+      content
+      |> Enum.chunk_by(fn %{height: height} -> height end)
+      |> Enum.map(&send_chunk(pid, &1))
+
+      {:ok, pid}
+    end)
 end
 \`\`\``;

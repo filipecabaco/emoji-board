@@ -5,7 +5,7 @@ defmodule Emoji.Board.Process do
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: __MODULE__)
   def init(_), do: {:ok, []}
 
-  def handle_call({:image, filepath}, _sender, _state) do
+  def handle_call({:process, filepath}, _sender, _state) do
     {:ok, content} = File.read(filepath)
     {:ok, node} = connect_to_worker()
     message = {:image, self(), content}

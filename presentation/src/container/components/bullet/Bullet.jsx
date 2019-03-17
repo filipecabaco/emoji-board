@@ -8,7 +8,7 @@ export const Bullet = ({ content: { title, bullets } }) => () => (
     {bullets &&
       bullets.map(bullet => (
         <div key={key()}>
-          <li /> {bullet}
+          <li>{bullet}</li>
         </div>
       ))}
   </section>

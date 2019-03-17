@@ -3,7 +3,8 @@ import * as React from "react";
 import styles from "./Emoji.css";
 
 const fontSize = 1;
-const canvasSize = window.innerHeight;
+const canvasHeight = window.innerHeight - 4;
+const canvasWidth = window.innerWidth - 4;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,8 +12,8 @@ export default class App extends React.Component {
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          width: { ideal: window.innerHeight },
-          height: { ideal: window.innerHeight }
+          width: { ideal: canvasWidth },
+          height: { ideal: canvasHeight }
         }
       })
       .then(function(stream) {
@@ -22,12 +23,17 @@ export default class App extends React.Component {
       .catch(function(err) {
         console.error("Error in 📷!", err);
       });
-    this.connect();
+    const ws = this.connect();
+    this.state = { ws };
+  }
+
+  componentWillUnmount() {
+    this.state.ws.close();
   }
 
   componentDidMount() {
     getCanvas().font = `${fontSize}px Arial`;
-    getCanvas().clearRect(0, 0, canvasSize, canvasSize);
+    getCanvas().clearRect(0, 0, canvasWidth, canvasHeight);
   }
 
   render() {
@@ -39,8 +45,8 @@ export default class App extends React.Component {
             ref="canvas"
             id="canvas"
             className={styles.canvas}
-            width={canvasSize}
-            height={canvasSize}
+            width={canvasWidth}
+            height={canvasHeight}
           />
         </div>
 
@@ -52,14 +58,14 @@ export default class App extends React.Component {
 
   takePicture() {
     var context = getSnapshot().getContext("2d");
-    getSnapshot().width = canvasSize;
-    getSnapshot().height = canvasSize;
-    context.drawImage(getVideo(), 0, 0, canvasSize, canvasSize);
+    getSnapshot().width = canvasWidth;
+    getSnapshot().height = canvasHeight;
+    context.drawImage(getVideo(), 0, 0, canvasWidth, canvasHeight);
 
     getSnapshot().toBlob(fileUpload);
     getSnapshot()
       .getContext("2d")
-      .clearRect(0, 0, canvasSize, canvasSize);
+      .clearRect(0, 0, canvasHeight, canvasWidth);
   }
 
   connect() {
@@ -74,12 +80,13 @@ export default class App extends React.Component {
           data.content.map(drawCell);
           break;
         case "clean":
-          getCanvas().clearRect(0, 0, canvasSize, canvasSize);
+          getCanvas().clearRect(0, 0, canvasHeight, canvasWidth);
           break;
         default:
           break;
       }
     };
+    return connection;
   }
 }
 

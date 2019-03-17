@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Bullet } from "./components/bullet/Bullet";
 import Emoji from "./components/emoji/Emoji";
+import { ScreenSize } from "./components/screenSize/ScreenSize";
 import { Image } from "./components/image/Image";
 import { Markdown } from "./components/markdown/Markdown";
 import { Svg } from "./components/svg/Svg";
@@ -22,6 +23,8 @@ const contents = slides.map(slide => {
       return Image({ content: slide });
     case "emoji":
       return () => <Emoji />;
+    case "screenSize":
+      return () => <ScreenSize />;
     default:
       return <section />;
   }

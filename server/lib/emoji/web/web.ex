@@ -9,7 +9,7 @@ defmodule Emoji.Web do
     Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison,
+    json_decoder: Jason,
     length: 100_000_000
   )
 

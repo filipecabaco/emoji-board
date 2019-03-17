@@ -14,6 +14,8 @@ import {
   processorGenserver4,
   projectCreate,
   sender0,
+  sender1,
+  sender2,
   supervisor0,
   supervisor1,
   supervisor2,
@@ -21,7 +23,8 @@ import {
   supervisor4,
   websocket0,
   worker0,
-  worker1
+  worker1,
+  worker2
 } from "./content/code";
 import SupervisorsGif from "./content/supervisors.gif";
 
@@ -59,7 +62,7 @@ export const slides = [
       "Create an Elixir application",
       "Connect it to Kotlin",
       "Send information to a Web Client",
-      "Take a picture with every pixels replaced by a 😄",
+      "Take a picture with every pixel replaced by a 😄",
       "(Bonus) Show how to parallize"
     ]
   },
@@ -98,8 +101,16 @@ export const slides = [
   },
   { type: "image", style: { height: "70%" }, img: SupervisorsGif },
   { type: "title", subtitle: "How do you define the 'Reanimator'?" },
-  { type: "markdown", markdown: supervisor1 },
+  {
+    type: "markdown",
+    style: { alignContent: "center" },
+    markdown: supervisor1
+  },
   { type: "svg", title: "", svg: <SupervisionTree /> },
+  {
+    type: "title",
+    subtitle: 'This is why Erlang follows a mentality called "Let It Crash"'
+  },
   { type: "image", style: { height: "70%" }, img: CarCrashGif },
   {
     type: "title",
@@ -110,12 +121,12 @@ export const slides = [
     title: "Creating the Emoji Processor",
     svg: <EmojiProcessorSvg />
   },
-  { type: "markdown", markdown: processorGenserver0 },
   {
     type: "title",
     subtitle:
-      "GenServer it's another recipe focused on the way we receive / answer messages"
+      "Lets use the GenServer behaviour which focuses on how we receive / answer messages"
   },
+  { type: "markdown", markdown: processorGenserver0 },
   { type: "svg", title: "What do we have available?", svg: <GenServerTypes /> },
   { type: "markdown", markdown: processorGenserver1 },
   {
@@ -131,23 +142,28 @@ export const slides = [
   },
   {
     type: "bullet",
-    title: "Oh god... Why...?",
+    title: "Why Kotlin in the middle of this?",
     bullets: [
+      "Just another available protocol at your disposal",
       "Erlang provides an out of the box Java library to connect Beam VM with JVM",
       "Since everything is message passing, we can do the same with other languages",
-      "Lack of a feature in Erlang / JVM easily managed thanks to message passing",
-      "Kotlin has really good Java Interoperability and it's really fun to work with"
+      "Lack of a feature in Erlang / JVM easily managed thanks to message passing"
     ]
   },
   { type: "markdown", markdown: supervisor3 },
   { type: "markdown", markdown: processorGenserver3 },
   { type: "markdown", markdown: worker0 },
   { type: "markdown", markdown: worker1 },
+  { type: "markdown", markdown: worker2 },
   { type: "markdown", markdown: processorGenserver4 },
   { type: "svg", title: "We are near the end!", svg: <EmojiWebsocketSvg /> },
-  { type: "markdown", markdown: websocket0 },
-  { type: "markdown", markdown: sender0 },
+  { type: "markdown", style: { fontSize: "3.4vh" }, markdown: websocket0 },
+  { type: "markdown", style: { fontSize: "3.4vh" }, markdown: sender0 },
+  { type: "markdown", markdown: sender1 },
+  { type: "markdown", markdown: sender2 },
   { type: "markdown", markdown: supervisor4 },
+  { type: "emoji" },
+  { type: "screenSize" },
   { type: "emoji" },
   {
     type: "title",
