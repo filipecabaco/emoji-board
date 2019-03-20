@@ -45,7 +45,7 @@ end
 export const supervisor3 = `
 > in Emoji.Board.Supervisor
 \`\`\` elixir
-# Connect to the JVM 
+# Connect to the Erlang Port Mapper (epmd)
 Node.start(:server@localhost, :shortnames)
 Node.set_cookie(:secret)
 \`\`\``;
@@ -84,9 +84,8 @@ defmodule Emoji.Board.Process do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
   def init(_) do
-#   This is ran by start_link which is blocked by this
-#   Used if some processing is required 
-#   e.g. fetching data from DB
+#   This is ran by start_link and blocks it until done
+#   Used if some processing is required e.g. fetching data from DB
     {:ok, []}
   end
 end 
@@ -100,7 +99,7 @@ export const processorGenserver1 = `
 # 2. Connects to Kotlin worker
 # 3. Sends message to Kotlin worker
 # 4. Returns :ok to the original caller
-def handle_call({:image, filepath}, _sender, _state) do
+def handle_call({:process, filepath}, _sender, _state) do
   {:ok, content} = File.read(filepath)
   {:ok, node} = connect_to_worker()
   message = {:image, self(), content}
@@ -126,7 +125,7 @@ end
 export const processorGenserver3 = `
 > in Emoji.Board.Process
 \`\`\` elixir
-# Connect to our node and pings it 
+# Connects to our node; pings it and if responds, returns address
 defp connect_to_worker() do
   node = :worker@localhost
   true = Node.connect(node)
@@ -134,7 +133,7 @@ defp connect_to_worker() do
   {:ok, node}
 end
 
-# Receives messagefrom worker
+# Handle "generic" messages from worker
 def handle_info(content, _) do
   {:noreply, []}
 end
@@ -191,7 +190,7 @@ export const processorGenserver4 = `
 \`\`\` elixir
 def handle_info(content, _) do
 # Find and call our sender
-  :ok = GenServer.call(
+  :ok = GenServer.cast(
     Process.whereis(Emoji.Board.Sender), {:processed, content}
   )
   {:noreply, []}
@@ -246,24 +245,20 @@ end
 export const sender1 = `
 > in Emoji.Board.Sender
 \`\`\` elixir
-def handle_call({:processed, content}, _, state) do
+def handle_cast({:processed, content}, state) do
   Enum.each(state, &clean_view(&1))
   Enum.each(state, &send_content(&1, content))
-  {:reply, :ok, state}
+  {:noreply, state}
 end
 \`\`\``;
 export const sender2 = `
 > in Emoji.Board.Sender
 \`\`\` elixir
 defp send_content(%{pid: pid}, content) do
-    Task.async(fn ->
-      Logger.info("Sending content...")
-
-      content
-      |> Enum.chunk_by(fn %{height: height} -> height end)
-      |> Enum.map(&send_chunk(pid, &1))
-
-      {:ok, pid}
-    end)
+  Logger.info("Sending content...")
+  content
+  |> Enum.chunk_by(fn %{height: height} -> height end)
+  |> Enum.map(&send_chunk(pid, &1))
+  {:ok, pid}
 end
 \`\`\``;

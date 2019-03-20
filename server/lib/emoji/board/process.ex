@@ -21,7 +21,7 @@ defmodule Emoji.Board.Process do
   end
 
   def handle_info(content, _) do
-    :ok = GenServer.call(Process.whereis(Emoji.Board.Sender), {:processed, content})
+    :ok = GenServer.cast(Process.whereis(Emoji.Board.Sender), {:processed, content})
     {:noreply, []}
   end
 end

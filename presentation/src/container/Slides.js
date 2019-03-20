@@ -78,7 +78,10 @@ export const slides = [
     svg: <EmojiSupervisorSvg />
   },
   { type: "title", subtitle: "How to create a Supervisor?" },
-  { type: "title", subtitle: "We'll use some recipes provided by Elixir!" },
+  {
+    type: "title",
+    subtitle: "We'll use recipes provided by Erlang/Elixir!"
+  },
   { type: "markdown", markdown: supervisor0 },
   { type: "title", subtitle: "What's a Supervisor?" },
   {
@@ -145,7 +148,7 @@ export const slides = [
     title: "Why Kotlin in the middle of this?",
     bullets: [
       "Just another available protocol at your disposal",
-      "Erlang provides an out of the box Java library to connect Beam VM with JVM",
+      "Erlang provides a Java library to connect it to an Erlang Cluster like an Erlang Node",
       "Since everything is message passing, we can do the same with other languages",
       "Lack of a feature in Erlang / JVM easily managed thanks to message passing"
     ]
@@ -153,7 +156,7 @@ export const slides = [
   { type: "markdown", markdown: supervisor3 },
   { type: "markdown", markdown: processorGenserver3 },
   { type: "markdown", markdown: worker0 },
-  { type: "markdown", markdown: worker1 },
+  { type: "markdown", style: { fontSize: "3.9vh" }, markdown: worker1 },
   { type: "markdown", markdown: worker2 },
   { type: "markdown", markdown: processorGenserver4 },
   { type: "svg", title: "We are near the end!", svg: <EmojiWebsocketSvg /> },
@@ -164,7 +167,6 @@ export const slides = [
   { type: "markdown", markdown: supervisor4 },
   { type: "emoji" },
   { type: "screenSize" },
-  { type: "emoji" },
   {
     type: "title",
     title: "Thank you!",

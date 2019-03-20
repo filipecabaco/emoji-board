@@ -2,21 +2,19 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  padding-bottom: 16vh;
-  height: calc(100% - 16vh);
+  /* height: calc(100% - 16vh); */
 }
 
 .svgContent .title {
-  height: auto;
   display: inline-flex;
   font-size: 8vh;
-  padding-left: 4vw;
-  padding-right: 4vw;
-  width: calc(100% - 8vw);
+  height: auto;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .svgContent svg {
   display: inline-flex;
-  width: 99%;
   margin: 0 auto;
+  height: calc(100% - 8vh);
 }

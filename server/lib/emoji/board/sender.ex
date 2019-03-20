@@ -17,10 +17,10 @@ defmodule Emoji.Board.Sender do
     {:reply, :ok, state}
   end
 
-  def handle_call({:processed, content}, _, state) do
+  def handle_cast({:processed, content}, state) do
     Enum.each(state, &clean_view(&1))
     Enum.each(state, &send_content(&1, content))
-    {:reply, :ok, state}
+    {:noreply, state}
   end
 
   def handle_info(_, state) do
@@ -31,16 +31,16 @@ defmodule Emoji.Board.Sender do
   defp clean_view(%{pid: pid}), do: send(pid, Jason.encode!(%{type: :clean}))
 
   defp send_content(%{pid: pid}, content) do
-    Task.async(fn ->
-      Logger.info("Sending content...")
+    Logger.info("Sending content...")
 
-      content
-      |> Enum.chunk_by(fn %{height: height} -> height end)
-      |> Enum.map(&send_chunk(pid, &1))
+    content
+    |> Enum.chunk_by(fn %{height: height} -> height end)
+    |> Enum.map(&send_chunk(pid, &1))
 
-      # |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end)) # Parallelize it!
-      {:ok, pid}
-    end)
+    # Parallelize it!
+    # |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end))
+
+    {:ok, pid}
   end
 
   defp send_chunk(pid, chunk), do: send(pid, Jason.encode!(%{type: :draw, content: chunk}))
