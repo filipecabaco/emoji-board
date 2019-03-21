@@ -261,4 +261,8 @@ defp send_content(%{pid: pid}, content) do
   |> Enum.map(&send_chunk(pid, &1))
   {:ok, pid}
 end
+
+defp send_chunk(pid, chunk) do
+ send(pid, Jason.encode!(%{type: :draw, content: chunk}))
+end
 \`\`\``;
