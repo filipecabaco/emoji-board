@@ -6,6 +6,7 @@ import EmojiWebsocketSvg from "svg-react-loader?name=Icon!./content/emoji_websoc
 import GenServerTypes from "svg-react-loader?name=Icon!./content/genserver_types.svg";
 import SupervisionTree from "svg-react-loader?name=Icon!./content/supervision_tree.svg";
 import CarCrashGif from "./content/car_crash.gif";
+import SupervisorsGif from "./content/supervisors.gif";
 import {
   processorGenserver0,
   processorGenserver1,
@@ -26,9 +27,8 @@ import {
   worker1,
   worker2
 } from "./content/code";
-import SupervisorsGif from "./content/supervisors.gif";
 
-export const slides = [
+const slides = [
   { type: "title", title: "Emoji Board", subtitle: "An Elixir showcase" },
   {
     type: "bullet",
@@ -173,3 +173,5 @@ export const slides = [
     subtitle: "Questions?"
   }
 ];
+
+export default slides;

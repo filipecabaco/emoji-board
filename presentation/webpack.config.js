@@ -14,18 +14,6 @@ module.exports = {
         use: { loader: "html-loader" }
       },
       {
-        test: /\.css$/,
-        loader: "style-loader"
-      },
-      {
-        test: /\.css$/,
-        loader: "css-loader",
-        query: {
-          modules: true,
-          localIdentName: "[name]__[local]___[hash:base64:5]"
-        }
-      },
-      {
         test: /\.(png|jp(e*)g|gif)$/,
         use: [
           {
@@ -40,7 +28,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx", ".css"]
+    extensions: [".js", ".jsx"]
   },
   plugins: [
     new HtmlWebPackPlugin({

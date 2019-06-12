@@ -1,20 +1,33 @@
 import hljs from "highlight.js";
 import MarkdownIt from "markdown-it";
 import React from "react";
-import styles from "./Markdown.css";
+import styled from "styled-components";
 
 const markdownParser = MarkdownIt({
   highlight: (str, lang) =>
     lang && hljs.getLanguage(lang) ? hljs.highlight(lang, str).value : ""
 });
 
-export const Markdown = ({ content: { markdown, style } }) => () => (
-  <section style={style} className={styles.markdownContent}>
+const Markdown = ({ content: { markdown, style } }) => (
+  <MarkdownContentStyle style={style}>
     <div
       style={style}
       dangerouslySetInnerHTML={{
         __html: markdownParser.render(markdown.trim())
       }}
     />
-  </section>
+  </MarkdownContentStyle>
 );
+
+const MarkdownContentStyle = styled.section `
+display: flex;
+flex-wrap: wrap;
+flex-direction: column;
+justify-content: center;
+margin-left: 4vh;
+
+div {
+  font-size: 4vh;
+}
+`
+export default Markdown;
