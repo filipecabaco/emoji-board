@@ -35,10 +35,7 @@ defmodule Emoji.Board.Sender do
 
     content
     |> Enum.chunk_by(fn %{height: height} -> height end)
-    |> Enum.map(&send_chunk(pid, &1))
-
-    # Parallelize it!
-    # |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end))
+    |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end))
 
     {:ok, pid}
   end

@@ -1,4 +1,4 @@
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream
+import java.io.ByteArrayInputStream
 import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -9,7 +9,7 @@ object ImageProcessor {
     private const val blueContribution = 0.07f
 
     fun process(content: ByteArray): List<Pixel>{
-        val image = ImageIO.read(ByteInputStream(content, content.size))
+        val image = ImageIO.read(ByteArrayInputStream(content, 0, content.size))
         val intensities = calculateAlpha(image)
         return normalize(intensities)
     }

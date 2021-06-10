@@ -19,11 +19,15 @@ mainClassName = 'MainKt'
 
 repositories {
     mavenCentral()
+    flatDir {
+       dirs 'libs'
+   }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile group: 'org.erlang.otp', name: 'jinterface', version: '1.6.1'
+    implementation name: 'OtpErlang'
+
 }
 
 compileKotlin {
