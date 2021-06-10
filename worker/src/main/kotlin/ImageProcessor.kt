@@ -29,8 +29,8 @@ object ImageProcessor {
 
     private fun normalize(intensities: List<Pixel>): List<Pixel> {
         val all = intensities.map { it.alpha }
-        val max = all.max() ?: 255f
-        val min = all.min() ?: 0f
+        val max = all.maxOrNull() ?: 255f
+        val min = all.minOrNull() ?: 0f
         return intensities.map { (h, w, i) ->
             val alpha = (1 - (i - min) / (max - min))
             Pixel(h, w, alpha.nanToZero())

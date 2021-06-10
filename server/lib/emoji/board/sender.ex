@@ -18,8 +18,16 @@ defmodule Emoji.Board.Sender do
   end
 
   def handle_cast({:processed, content}, state) do
-    Enum.each(state, &clean_view(&1))
-    Enum.each(state, &send_content(&1, content))
+    state
+    |> Task.async_stream(
+      fn client ->
+        clean_view(client)
+        send_content(client, content)
+      end,
+      timeout: 100_000
+    )
+    |> Stream.run()
+
     {:noreply, state}
   end
 
@@ -34,8 +42,9 @@ defmodule Emoji.Board.Sender do
     Logger.info("Sending content...")
 
     content
-    |> Enum.chunk_by(fn %{height: height} -> height end)
-    |> Enum.map(&Task.async(fn -> send_chunk(pid, &1) end))
+    |> Stream.chunk_every(5_000)
+    |> Task.async_stream(&send_chunk(pid, &1))
+    |> Stream.run()
 
     {:ok, pid}
   end
